@@ -17,13 +17,20 @@ async function run() {
    try {
      await client.connect();
      const database = client.db("products_practice");
-     const produtsCollection = database.collection("products_data");
+     const productsCollection = database.collection("products_data");
 
      // GET API
      app.get('/products' , async (req, res)=> {
-        const result = await produtsCollection.find({}).toArray();
+        const result = await productsCollection.find({}).toArray();
         console.log('hitting the server' , result)
         res.send(result);
+     })
+
+     // POST API
+     app.post('/products' , async(req, res)=>{
+        const product = req.body;
+        const result = await productsCollection.insertOne(product);
+        res.json(result);
      })
 
    } finally {
